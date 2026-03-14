@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Battle Castles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Battle Castles</h1>
+
+<h2 id="turnIndicator">Escolha seu castelo</h2>
+
+<!-- ========================= -->
+<!-- SELEÇÃO DE CASTELO -->
+<!-- ========================= -->
+
+<div id="castleSelection">
+
+  <h2 id="castleTitle">Jogador 1 - Escolha seu Castelo</h2>
+
+  <label>
+    <input type="radio" name="castleOption" value="gelo">
+    Castelo de Gelo (50 HP)
+  </label><br>
+
+  <label>
+    <input type="radio" name="castleOption" value="concreto">
+    Castelo de Concreto (60 HP)
+  </label><br>
+
+  <label>
+    <input type="radio" name="castleOption" value="areia">
+    Castelo de Areia (40 HP)
+  </label><br><br>
+
+  <button id="confirmCastleBtn">Confirmar</button>
+
+</div>
+
+<!-- ========================= -->
+<!-- TABULEIRO -->
+<!-- ========================= -->
+
+<div id="gameContainer"></div>
+
+<!-- ========================= -->
+<!-- MÃO -->
+<!-- ========================= -->
+
+<div id="hand"></div>
+
+<!-- ========================= -->
+<!-- CONTROLES -->
+<!-- ========================= -->
+
+<div id="gameControls" style="display:none;">
+
+   <button id="endTurnBtn">
+    Finalizar Turno
+  </button>
+
+</div>
+
+<script src="game.js" defer></script>
+
+</body>
+</html>

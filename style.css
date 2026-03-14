@@ -1,0 +1,121 @@
+body {
+  font-family: Arial;
+  background: #1e1e1e;
+  color: white;
+  text-align: center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* TABULEIRO */
+
+#gameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top:20px;
+}
+
+.slotRow {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 8px;
+}
+
+.slot {
+  width: 100px;
+  height: 120px;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #222;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.slot:hover{
+  outline:2px solid yellow;
+}
+
+/* MÃO */
+
+#hand{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.handCard {
+  width: 100px;
+  height: 120px;
+  border: 2px solid yellow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #333;
+  color: white;
+  cursor: pointer;
+}
+
+/* CARTAS ESPECIAIS */
+
+.magicCard {
+  border: 2px solid #5a189a;
+  background:#2b193d;
+}
+
+.buffCard {
+  border: 3px solid #2dc653;
+  box-shadow: 0 0 8px #2dc65388;
+  background:#0f2e1b;
+}
+
+/* CARTA SELECIONADA */
+
+.selectedCard{
+  outline: 3px solid yellow;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px gold;
+}
+
+/* ANIMAÇÃO ATAQUE */
+
+.attackFlash {
+  animation: attackFlash 0.4s;
+}
+
+@keyframes attackFlash {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.2); background:#ffaaaa; }
+  100% { transform: scale(1); }
+}
+
+.hitFlash {
+  animation: hitFlash 0.4s;
+}
+
+@keyframes hitFlash {
+  0% { background:white; }
+  50% { background:red; }
+  100% { background:white; }
+}
+
+/* ANIMAÇÃO MAGIA */
+
+.magic-hit{
+  animation: magicFlash 0.25s;
+}
+
+@keyframes magicFlash{
+  0%{ transform: scale(1); background:red; }
+  50%{ transform: scale(1.1); background:orange; }
+  100%{ transform: scale(1); }
+}
