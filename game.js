@@ -481,6 +481,8 @@ async function endTurn(){
     drawCard(player)
   }
 
+  player.isFirstTurn = false
+
   player.hasPlacedCombatThisTurn = false
   player.hasPlacedMagicThisTurn = false
 
@@ -505,6 +507,22 @@ function placeCard(slotIndex){
   }
 
   const card = player.hand[selectedCardIndex]
+
+  if(player.isFirstTurn && player.hasPlayedOpeningCard){
+    alert("No primeiro turno você só pode jogar 1 carta.")
+    return
+  }
+
+  if(card.type === "combat" && player.hasPlacedCombatThisTurn){
+    alert("Você já colocou uma carta de combate neste turno.")
+    return
+  }
+
+  if(card.type === "magic" && player.hasPlacedMagicThisTurn){
+    alert("Você já colocou uma carta mágica neste turno.")
+    return
+  }
+
   const slotCard = player.board[slotIndex]
 
   // Carta de combate
@@ -512,6 +530,7 @@ function placeCard(slotIndex){
     if(slotCard) return // não pode sobrepor
     player.board[slotIndex] = card
     card.mana = 0
+    player.hasPlacedCombatThisTurn = true
   }
   // Carta mágica de ataque
   else if(card.type === "magic" && card.subtype === "damage"){
@@ -522,11 +541,17 @@ function placeCard(slotIndex){
       casterSlot: slotIndex,
       targetSlots: getTargetsForMagic(card, slotIndex)
     })
+    player.hasPlacedMagicThisTurn = true
   }
   // Carta mágica de buff
   else if(card.type === "magic" && card.subtype === "buff"){
     player.board[slotIndex] = card
     card.turnsRemaining = card.duration
+    player.hasPlacedMagicThisTurn = true
+  }
+
+  if(player.isFirstTurn){
+    player.hasPlayedOpeningCard = true
   }
 
   // Remove da mão
@@ -540,17 +565,9 @@ function handleSlotClick(playerIndex, slotIndex){
 
   const player = players[currentPlayer]
   const card = player.hand[selectedCardIndex]
-  const slotCard = player.board[slotIndex]
-
   if(!card) return
 
-  // Se for carta de combate, só pode colocar em slot vazio
-  if(card.type === "combat" && slotCard !== null) return
-
-  // Se for carta mágica
-  if(card.type === "magic"){
-    if(slotCard && slotCard.type === "magic") return // não sobrepor mágica
-  }
+  if(!canPlaceCard(player, slotIndex, card)) return
 
   placeCard(slotIndex)
 }
@@ -856,9 +873,7 @@ function applyStatusEffects(playerIndex){
     if(!card || card.type !== "combat") return
 
     if(card.status.burn > 0){
-	  // aplica somente se o efeito ainda é válido
-	  damage = Math.round(damage * 1.5)
-	  target.status.burn = null // efeito aplicado
+      card.status.burn--
     }
 
     // SHOCK
@@ -902,10 +917,6 @@ function applyRowColor(casterPlayer, slot, effect){
       turnsRemaining: 1
     })
   }
-}
-function updateRowEffects(){
-  rowEffects.forEach(e => e.turnsRemaining--)
-  rowEffects = rowEffects.filter(e => e.turnsRemaining > 0)
 }
 function getCardStatusColor(card){
   if(!card || card.type !== "combat") return null
